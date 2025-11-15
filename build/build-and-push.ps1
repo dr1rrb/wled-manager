@@ -68,7 +68,7 @@ if ($AlsoTagLatest) {
 if ($LASTEXITCODE -ne 0) {
     Write-Host ""
     Write-Host "? Pipeline failed at push step!" -ForegroundColor Red
-  exit $LASTEXITCODE
+    exit $LASTEXITCODE
 }
 
 Write-Host ""
