@@ -4,11 +4,13 @@ on:
   push:
     branches:
       - main
+      - 'dev/**'  # Temporarily allow dev branches for testing
     tags:
       - 'v*'
   pull_request:
     branches:
       - main
+      - 'dev/**'  # Temporarily allow PRs to dev branches
   workflow_dispatch:
 
 env:
