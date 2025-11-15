@@ -1,0 +1,49 @@
+mode: ContinuousDeployment
+branches:
+  main:
+mode: ContinuousDeployment
+    tag: ''
+    increment: Minor
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+  regex: ^main$
+    source-branches: []
+  develop:
+  mode: ContinuousDeployment
+    tag: alpha
+    increment: Minor
+  prevent-increment-of-merged-branch-version: false
+    track-merge-target: true
+    regex: ^dev(elop)?(ment)?$
+  source-branches: []
+  feature:
+    mode: ContinuousDeployment
+    tag: beta.{BranchName}
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    regex: ^features?[/-]
+    source-branches:
+   - develop
+      - main
+  pull-request:
+    mode: ContinuousDeployment
+    tag: pr.{BranchName}
+  increment: Inherit
+  prevent-increment-of-merged-branch-version: true
+    tag-number-pattern: '[/-](?<number>\d+)'
+    track-merge-target: false
+    regex: ^(pull|pull\-requests|pr)[/-]
+    source-branches:
+      - develop
+ - main
+      - feature
+ignore:
+  sha: []
+merge-message-formats: {}
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
+no-bump-message: '\+semver:\s?(none|skip)'
+tag-prefix: 'v'
+version-in-branch-pattern: (?<version>[vV]?\d+(\.\d+)?(\.\d+)?).*
