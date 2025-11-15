@@ -1,0 +1,6 @@
+@WledManager_HostAddress = http://localhost:5112
+
+GET {{WledManager_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
