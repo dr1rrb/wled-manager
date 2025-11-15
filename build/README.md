@@ -26,23 +26,15 @@ The GitHub Action is configured to:
 - Build on pull requests (without pushing)
 - Build and tag versions on git tags (format `v*`)
 - Support `linux/amd64` and `linux/arm64` architectures
-- **Automatically calculate versions using GitVersion**
+- Automatically calculate versions using Nerdbank.GitVersioning (via `version.json`)
 
 ## Versioning
 
-This project uses [GitVersion](https://gitversion.net/) to automatically calculate semantic versions.
+This project uses [Nerdbank.GitVersioning](https://github.com/dotnet/Nerdbank.GitVersioning) to automatically calculate semantic versions.
 
 See [docs/VERSIONING.md](../docs/VERSIONING.md) for details on:
 - How versions are calculated
-- How to control version bumps via commit messages
 - How to create releases
-
-### Quick version control
-
-Use these in your commit messages to control versioning:
-- `+semver: major` - Breaking changes (1.0.0 ? 2.0.0)
-- `+semver: minor` - New features (1.0.0 ? 1.1.0)
-- `+semver: patch` - Bug fixes (1.0.0 ? 1.0.1)
 
 ## Generated Docker tags
 
@@ -60,4 +52,4 @@ For git tags (`v*`), additional semantic version tags are created.
 
 No special configuration is required. GitHub Actions automatically uses the `GITHUB_TOKEN` to authenticate to GHCR.
 
-GitVersion is automatically installed and configured in the CI/CD pipeline.
+Nerdbank.GitVersioning is installed on-demand (both locally through `build/get-version.ps1` and inside CI) so the calculated values remain consistent.

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/main/src/NerdBank.GitVersioning/version.schema.json",
+  "version": "0.1",
+  "publicReleaseRefSpec": [
+    "^refs/heads/main$",
+    "^refs/heads/master$",
+    "^refs/tags/v\\d+\\.\\d+\\.\\d+$"
+  ],
+  "gitCommitIdShortFixedLength": 8,
+  "cloudBuild": {
+    "buildNumber": {
+      "enabled": true,
+      "setAllVariables": true
+    },
+    "setVersionVariables": true
+  },
+  "prerelease": {
+    "tag": "preview",
+    "number": {
+      "enabled": true,
+      "precision": "build"
+    }
+  }
+}

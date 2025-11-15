@@ -1,69 +1,50 @@
-# GitVersion Configuration
+# Versioning Strategy
 
-This project uses [GitVersion](https://gitversion.net/) to automatically calculate semantic versions based on Git history.
+The repository relies on [Nerdbank.GitVersioning (NBGV)](https://github.com/dotnet/Nerdbank.GitVersioning) to calculate semantic versions from the Git graph. All configuration lives in `version.json`, and MSBuild consumes it through the `Nerdbank.GitVersioning` package reference in `src/WledManager/WledManager.csproj`.
 
-## How it works
+## How versions are produced
 
-GitVersion analyzes your Git repository and generates a version number based on:
-- Branch names
-- Commit messages
-- Git tags
+- `version.json` defines a base `version` that you bump whenever a new release train starts.
+- `main` (and tags that match `v*`) are treated as public release refs, so they emit clean versions such as `1.2.3`.
+- Any other branch automatically receives a `preview` prerelease suffix whose number equals the git height since the last base bump (for example `1.2.3-preview.5`).
+- CI and local builds run the `nbgv` CLI, ensuring Docker tags, assemblies, and NuGet metadata stay in sync.
 
-## Version Strategy
+## Working locally
 
-- **main** branch: Production versions (e.g., `1.2.3`)
-- **develop** branch: Alpha versions (e.g., `1.2.3-alpha.1`)
-- **feature/** branches: Beta versions (e.g., `1.2.3-beta.feature-name.1`)
-- **pull-request/** branches: PR versions (e.g., `1.2.3-pr.123.1`)
+```powershell
+# Install the CLI once
+dotnet tool install --global nbgv
 
-## Controlling Version Bumps
+# Show every calculated field in JSON
+dotnet nbgv get-version -f json
 
-You can control version increments using commit messages:
-
-- `+semver: major` or `+semver: breaking` - Bump major version (1.0.0 ? 2.0.0)
-- `+semver: minor` or `+semver: feature` - Bump minor version (1.0.0 ? 1.1.0)
-- `+semver: patch` or `+semver: fix` - Bump patch version (1.0.0 ? 1.0.1)
-- `+semver: none` or `+semver: skip` - Don't bump version
-
-### Examples
-
-```bash
-git commit -m "feat: Add new LED effect +semver: minor"
-git commit -m "fix: Correct brightness calculation +semver: patch"
-git commit -m "BREAKING CHANGE: Remove deprecated API +semver: major"
+# Friendly helper (installs the CLI if needed)
+./build/get-version.ps1
 ```
 
-## Creating Releases
+Use `./build/get-version.ps1 -Variable NuGetPackageVersion` to pull a specific field, or `-ShowAll` to dump the entire JSON payload.
 
-To create a new release:
+## Bumping the base version
 
-1. Tag your commit on the main branch:
-   ```bash
-   git tag v1.0.0
-   git push origin v1.0.0
- ```
+1. Edit the `version` value inside `version.json` (e.g., from `0.1` to `0.2`).
+2. Commit the change on the branch that will generate the release.
+3. (Optional) Run `dotnet nbgv prepare-release` for a guided bump/tag workflow.
 
-2. The GitHub Action will automatically:
- - Calculate the version using GitVersion
-   - Build the Docker image
-   - Tag it with multiple versions (e.g., `1.0.0`, `1.0`, `1`, `latest`)
-   - Push to GitHub Container Registry
+After the bump, the next commit on `main` emits `0.2.0`, while feature branches show `0.2.0-preview.*`.
 
-## Local Version Calculation
+## Creating releases
 
-To see what version GitVersion would calculate locally:
+1. Ensure `main` contains the desired code.
+2. Tag the release commit: `git tag v1.0.0`.
+3. Push the tag: `git push origin v1.0.0`.
 
-```bash
-# Install GitVersion (one-time setup)
-dotnet tool install --global GitVersion.Tool
+The GitHub Action will then:
+- Resolve versions with `dotnet nbgv get-version -f json`.
+- Build Docker images with tags such as `{version}`, `{major}.{minor}`, `{major}`, `latest`, and branch-specific fallbacks.
+- Push everything to GitHub Container Registry using the default token.
 
-# Calculate version
-dotnet gitversion
+## Reference
 
-# Get just the SemVer
-dotnet gitversion /showvariable SemVer
-```
-
-## Configuration
-
-The GitVersion configuration is in `GitVersion.yml` at the root of the repository. See [GitVersion documentation](https://gitversion.net/docs/) for customization options.
+- Configuration file: `version.json`.
+- CLI reference: `dotnet nbgv --help`.
+- Helper script: `build/get-version.ps1`.
