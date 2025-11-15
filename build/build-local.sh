@@ -9,7 +9,7 @@ OWNER="${GITHUB_REPOSITORY_OWNER}"
 if [ -z "$OWNER" ]; then
     GIT_REMOTE=$(git remote get-url origin 2>/dev/null || echo "")
     if [[ $GIT_REMOTE =~ github\.com[:/]([^/]+)/ ]]; then
-     OWNER="${BASH_REMATCH[1]}"
+        OWNER="${BASH_REMATCH[1]}"
     else
         OWNER="dr1rrb"  # Fallback
     fi
@@ -31,8 +31,8 @@ docker build \
     "$DOCKER_CONTEXT"
 
 if [ $? -eq 0 ]; then
-  echo ""
-echo "? Build successful!"
+    echo ""
+    echo "? Build successful!"
     echo ""
     echo "To test the image:"
     echo "  docker run -p 8080:8080 $IMAGE_NAME:$TAG"
