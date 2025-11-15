@@ -2,7 +2,7 @@
 
 public class BackupOptions
 {
-	public string Path { get; set; } = "/backups";
+	public string Path { get; set; } = "/wled-manager/backups";
 
 	public TimeSpan TimeOfDay { get; set; } = TimeSpan.FromHours(3);
 

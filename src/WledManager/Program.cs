@@ -4,9 +4,11 @@ using WledManager.Synchronization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add configuration file from container
+builder.Configuration.AddJsonFile("/wled-manager/config.json", optional: true, reloadOnChange: true);
+
 // Options
 builder.Services.AddOptions<BackupOptions>().BindConfiguration("Backup");
-builder.Services.AddOptions<List<string>>().BindConfiguration("Devices");
 builder.Services.AddOptions<List<PresetsSyncOptions>>().BindConfiguration("Sync");
 
 // Add services to the container.
