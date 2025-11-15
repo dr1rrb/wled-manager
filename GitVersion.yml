@@ -1,21 +1,21 @@
 mode: ContinuousDeployment
 branches:
   main:
-mode: ContinuousDeployment
+    mode: ContinuousDeployment
     tag: ''
     increment: Minor
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-  regex: ^main$
+    regex: ^main$
     source-branches: []
   develop:
-  mode: ContinuousDeployment
+    mode: ContinuousDeployment
     tag: alpha
     increment: Minor
-  prevent-increment-of-merged-branch-version: false
+    prevent-increment-of-merged-branch-version: false
     track-merge-target: true
     regex: ^dev(elop)?(ment)?$
-  source-branches: []
+    source-branches: []
   feature:
     mode: ContinuousDeployment
     tag: beta.{BranchName}
@@ -24,19 +24,19 @@ mode: ContinuousDeployment
     track-merge-target: false
     regex: ^features?[/-]
     source-branches:
-   - develop
+      - develop
       - main
   pull-request:
     mode: ContinuousDeployment
     tag: pr.{BranchName}
-  increment: Inherit
-  prevent-increment-of-merged-branch-version: true
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: true
     tag-number-pattern: '[/-](?<number>\d+)'
     track-merge-target: false
     regex: ^(pull|pull\-requests|pr)[/-]
     source-branches:
       - develop
- - main
+      - main
       - feature
 ignore:
   sha: []

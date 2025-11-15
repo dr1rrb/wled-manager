@@ -1,4 +1,4 @@
-#!/usr/bin/env pwsh
+﻿#!/usr/bin/env pwsh
 # Script to calculate the current version using GitVersion
 
 param(
@@ -6,7 +6,7 @@ param(
     [string]$Variable = "SemVer"
 )
 
-Write-Host "?? Calculating version with GitVersion..." -ForegroundColor Cyan
+Write-Host "🔍 Calculating version with GitVersion..." -ForegroundColor Cyan
 Write-Host ""
 
 # Check if GitVersion is installed
@@ -16,15 +16,15 @@ if (-not $gitVersionCmd) {
 }
 
 if (-not $gitVersionCmd) {
-    Write-Host "??  GitVersion not found. Installing..." -ForegroundColor Yellow
+    Write-Host "⚠️  GitVersion not found. Installing..." -ForegroundColor Yellow
     dotnet tool install --global GitVersion.Tool
     
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "? Failed to install GitVersion!" -ForegroundColor Red
+        Write-Host "❌ Failed to install GitVersion!" -ForegroundColor Red
         exit $LASTEXITCODE
     }
  
-    Write-Host "? GitVersion installed successfully!" -ForegroundColor Green
+    Write-Host "✅ GitVersion installed successfully!" -ForegroundColor Green
     Write-Host ""
 }
 
@@ -36,7 +36,7 @@ if ($ShowAll) {
     $version = & dotnet gitversion /showvariable $Variable
     
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "? Version: " -ForegroundColor Green -NoNewline
+        Write-Host "✅ Version: " -ForegroundColor Green -NoNewline
         Write-Host $version -ForegroundColor White
      
         if ($Variable -eq "SemVer") {
@@ -50,7 +50,7 @@ if ($ShowAll) {
             Write-Host "Run with -ShowAll to see all variables" -ForegroundColor DarkGray
         }
     } else {
-        Write-Host "? Failed to calculate version!" -ForegroundColor Red
+        Write-Host "❌ Failed to calculate version!" -ForegroundColor Red
         exit $LASTEXITCODE
     }
 }

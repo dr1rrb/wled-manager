@@ -1,4 +1,4 @@
-#!/usr/bin/env pwsh
+﻿#!/usr/bin/env pwsh
 # Script to build and push the Docker image in a single command
 
 param(
@@ -22,12 +22,12 @@ if (-not $Owner) {
     }
 }
 
-Write-Host "?? Build and Push Pipeline" -ForegroundColor Cyan
+Write-Host "🚀 Build and Push Pipeline" -ForegroundColor Cyan
 Write-Host "=========================" -ForegroundColor Cyan
 Write-Host ""
 
 # Step 1: Build
-Write-Host "?? Step 1/2: Building image..." -ForegroundColor Magenta
+Write-Host "📦 Step 1/2: Building image..." -ForegroundColor Magenta
 Write-Host ""
 
 $buildParams = @{
@@ -44,12 +44,12 @@ if ($NoCache) {
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host ""
-    Write-Host "? Pipeline failed at build step!" -ForegroundColor Red
+    Write-Host "❌ Pipeline failed at build step!" -ForegroundColor Red
     exit $LASTEXITCODE
 }
 
 Write-Host ""
-Write-Host "?? Step 2/2: Pushing image..." -ForegroundColor Magenta
+Write-Host "📤 Step 2/2: Pushing image..." -ForegroundColor Magenta
 Write-Host ""
 
 # Step 2: Push
@@ -67,9 +67,9 @@ if ($AlsoTagLatest) {
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host ""
-    Write-Host "? Pipeline failed at push step!" -ForegroundColor Red
+    Write-Host "❌ Pipeline failed at push step!" -ForegroundColor Red
     exit $LASTEXITCODE
 }
 
 Write-Host ""
-Write-Host "?? Pipeline completed successfully!" -ForegroundColor Green
+Write-Host "✅ Pipeline completed successfully!" -ForegroundColor Green
