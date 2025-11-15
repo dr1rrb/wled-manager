@@ -10,7 +10,14 @@ Write-Host "🔍 Calculating version with Nerdbank.GitVersioning..." -Foreground
 Write-Host ""
 
 function Ensure-NbgvInstalled {
-    $nbgvCmd = Get-Command dotnet-nbgv -ErrorAction SilentlyContinue
+    $toolRoot = Join-Path ([Environment]::GetFolderPath("UserProfile")) ".dotnet"
+    $toolPath = Join-Path $toolRoot "tools"
+    $pathSeparator = [IO.Path]::PathSeparator
+    if ($env:PATH -notlike "*$toolPath*") {
+        $env:PATH = "$env:PATH$pathSeparator$toolPath"
+    }
+
+    $nbgvCmd = Get-Command nbgv -ErrorAction SilentlyContinue
     if ($nbgvCmd) {
         return
     }
@@ -22,20 +29,15 @@ function Ensure-NbgvInstalled {
         exit $LASTEXITCODE
     }
 
-    $toolPath = Join-Path $env:USERPROFILE ".dotnet\tools"
-    if ($env:PATH -notlike "*$toolPath*") {
-        $env:PATH = "$env:PATH;$toolPath"
-    }
-
     Write-Host "✅ Nerdbank.GitVersioning CLI installed successfully!" -ForegroundColor Green
     Write-Host ""
 }
 
 function Get-VersionInfo {
     Ensure-NbgvInstalled
-    $json = dotnet nbgv get-version -f json
+    $json = nbgv get-version -f json
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "❌ dotnet nbgv get-version failed!" -ForegroundColor Red
+        Write-Host "❌ nbgv get-version failed!" -ForegroundColor Red
         exit $LASTEXITCODE
     }
 

@@ -32,12 +32,22 @@ jobs:
         id: nbgv
         shell: pwsh
         run: |
-          dotnet tool install --global nbgv --version 3.*
-          $toolPath = "$env:USERPROFILE\.dotnet\tools"
+          $ErrorActionPreference = 'Stop'
+          $toolPath = Join-Path $HOME ".dotnet/tools"
           if ($env:PATH -notlike "*$toolPath*") {
-            $env:PATH = "$env:PATH;$toolPath"
+            $env:PATH = "$toolPath;$env:PATH"
           }
-          $result = dotnet nbgv get-version -f json | ConvertFrom-Json
+
+          dotnet tool update --global nbgv --version 3.* *> $null
+          $updateExit = $LASTEXITCODE
+          if ($updateExit -ne 0) {
+            dotnet tool install --global nbgv --version 3.* | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+              throw "Failed to install Nerdbank.GitVersioning CLI"
+            }
+          }
+
+          $result = nbgv get-version -f json | ConvertFrom-Json
           "semVer=$($result.SemVer2)" >> $env:GITHUB_OUTPUT
           "simpleVersion=$($result.SimpleVersion)" >> $env:GITHUB_OUTPUT
           "nugetVersion=$($result.NuGetPackageVersion)" >> $env:GITHUB_OUTPUT
@@ -68,7 +78,7 @@ jobs:
             type=semver,pattern={{version}},value=${{ steps.nbgv.outputs.semVer }}
             type=semver,pattern={{major}}.{{minor}},value=${{ steps.nbgv.outputs.semVer }}
             type=semver,pattern={{major}},value=${{ steps.nbgv.outputs.semVer }}
-            type=sha,prefix={{branch}}-
+            type=sha,prefix={{branch}}-,enable=${{ startsWith(github.ref, 'refs/heads/') }}
             type=raw,value=latest,enable={{is_default_branch}}
             type=raw,value=${{ steps.nbgv.outputs.semVer }}
 
