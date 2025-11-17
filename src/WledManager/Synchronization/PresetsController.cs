@@ -2,6 +2,10 @@
 
 namespace WledManager.Synchronization;
 
+/// <summary>
+/// HTTP endpoint for launching preset synchronization runs.
+/// </summary>
+/// <param name="service">Service that performs the synchronization work.</param>
 [ApiController]
 [Route("api/presets")]
 public class PresetsController(IPresetsSyncService service)

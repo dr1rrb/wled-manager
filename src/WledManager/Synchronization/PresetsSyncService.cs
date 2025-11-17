@@ -8,6 +8,9 @@ using WledManager.Utils;
 
 namespace WledManager.Synchronization;
 
+/// <summary>
+/// Background worker that propagates presets from a canonical WLED device to multiple targets.
+/// </summary>
 public class PresetsSyncService(IOptionsMonitor<List<PresetsSyncOptions>> options, ILogger<BackupService> log) : BackgroundService, IPresetsSyncService
 {
 	private static readonly JsonSerializerOptions _noEscapeJson = new(JsonSerializerOptions.Default)
@@ -25,6 +28,7 @@ public class PresetsSyncService(IOptionsMonitor<List<PresetsSyncOptions>> option
 			?.DisposeWith(stoppingToken);
 	}
 
+	/// <inheritdoc />
 	public async Task SyncAsync(CancellationToken ct)
 	{
 		log.LogTrace("Starting sync of WLED presets.");

@@ -1,7 +1,11 @@
 ﻿namespace WledManager.Utils.HealthChecks;
 
+/// <summary>
+/// Default implementation that reports health-check status to HTTP endpoints.
+/// </summary>
 public class HealthChecksService(ILogger<HealthChecksService> log) : IHealthChecksService
 {
+	/// <inheritdoc />
 	public IHealthCheck StartNew(Uri? checkUrl)
 		=> checkUrl is null
 			? NullCheck.Instance

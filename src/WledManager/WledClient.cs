@@ -2,7 +2,7 @@
 
 namespace WledManager;
 
-public class WledClient(Uri host) : IDisposable
+internal class WledClient(Uri host) : IDisposable
 {
 	public WledClient(string host)
 		: this(Uri.TryCreate(host, UriKind.Absolute, out var uri) ? uri : new Uri("http://" + host))
@@ -21,19 +21,16 @@ public class WledClient(Uri host) : IDisposable
 	public async ValueTask SetPresetsAsync(string json, CancellationToken ct)
 	{
 		/*
-*
+			------geckoformboundary5995db199860ac3110d0b49707246d2
+			Content-Disposition: form-data; name="data"; filename="/presets.json"
+			Content-Type: application/json
 
-------geckoformboundary5995db199860ac3110d0b49707246d2
-	Content-Disposition: form-data; name="data"; filename="/presets.json"
-	Content-Type: application/json
+			{
+			}
 
-	{
-}
+			------geckoformboundary5995db199860ac3110d0b49707246d2--
+		*/
 
-	------geckoformboundary5995db199860ac3110d0b49707246d2--
-
-*
-*/
 		var part = new StringContent(json)
 		{
 			Headers =
