@@ -11,7 +11,7 @@ namespace WledManager.Backups;
 public class BackupController(IBackupService service)
 {
 	/// <summary>
-	/// Triggers a manual backup of all WLED devices
+	/// Triggers a manual backup of all WLED devices.
 	/// </summary>
 	/// <remarks>
 	/// Performs an immediate backup of presets, configuration, and state for all configured WLED devices.

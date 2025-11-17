@@ -11,7 +11,7 @@ namespace WledManager.Synchronization;
 public class PresetsController(IPresetsSyncService service)
 {
 	/// <summary>
-	/// Synchronizes presets across configured WLED devices
+	/// Synchronizes presets across configured WLED devices.
 	/// </summary>
 	/// <remarks>
 	/// Synchronizes presets from source WLED devices to target devices based on configuration.

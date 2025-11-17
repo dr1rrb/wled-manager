@@ -35,7 +35,7 @@ builder.Services.AddHostedService(svc => (PresetsSyncService)svc.GetRequiredServ
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment()) ==> This is NOT designed to be exposed on internet (like the WLED devices)
+// if (app.Environment.IsDevelopment()) ==> This is NOT designed to be exposed on Internet (like the WLED devices)
 {
 	app.UseSwagger();
 	app.UseSwaggerUI();
