@@ -2,6 +2,10 @@
 
 namespace WledManager.Backups;
 
+/// <summary>
+/// HTTP surface for triggering manual backup runs.
+/// </summary>
+/// <param name="service">Service responsible for performing backups.</param>
 [ApiController]
 [Route("api/backups")]
 public class BackupController(IBackupService service)

@@ -6,6 +6,9 @@ using WledManager.Utils.HealthChecks;
 
 namespace WledManager.Backups;
 
+/// <summary>
+/// Background service that captures configuration and presets for every configured WLED controller.
+/// </summary>
 public sealed class BackupService(IOptionsMonitor<BackupOptions> options, TimeProvider time, IHealthChecksService health, ILogger<BackupService> log) : BackgroundService, IBackupService
 {
 	/// <inheritdoc />
@@ -41,6 +44,7 @@ public sealed class BackupService(IOptionsMonitor<BackupOptions> options, TimePr
 		return time.CreateTimer(_ => _ = BackupAsync(ct), null, due, TimeSpan.FromDays(1));
 	}
 
+	/// <inheritdoc />
 	public async Task BackupAsync(CancellationToken ct)
 	{
 		var opts = options.CurrentValue;

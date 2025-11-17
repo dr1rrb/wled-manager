@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace WledManager.Utils;
 
-public static class OptionsMonitorExtensions
+internal static class OptionsMonitorExtensions
 {
 	public static async IAsyncEnumerable<T> AsAsyncEnumerable<T>(this IOptionsMonitor<T> options, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
