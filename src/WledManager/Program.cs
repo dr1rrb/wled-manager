@@ -2,6 +2,7 @@ using System.Reflection;
 using WledManager;
 using WledManager.Backups;
 using WledManager.Synchronization;
+using WledManager.Utils.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 

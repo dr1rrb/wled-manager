@@ -1,16 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace WledManager;
-
-public interface IHealthCheck : IAsyncDisposable
-{
-	void SetFailed(Exception? error = null);
-}
-
-public interface IHealthChecksService
-{
-	IHealthCheck StartNew(Uri? checkUrl);
-}
+﻿namespace WledManager.Utils.HealthChecks;
 
 public class HealthChecksService(ILogger<HealthChecksService> log) : IHealthChecksService
 {
