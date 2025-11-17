@@ -2,6 +2,7 @@
 using System.Text.Json;
 using WledManager.DTO;
 using WledManager.Utils;
+using WledManager.Utils.HealthChecks;
 
 namespace WledManager.Backups;
 
