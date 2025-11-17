@@ -1,3 +1,4 @@
+using System.Reflection;
 using WledManager;
 using WledManager.Backups;
 using WledManager.Synchronization;
@@ -13,8 +14,14 @@ builder.Services.AddOptions<List<PresetsSyncOptions>>().BindConfiguration("Sync"
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+	// Include XML comments
+	var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+	var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFilename);
+	options.IncludeXmlComments(xmlPath);
+});
 
 builder.Services.AddSingleton<TimeProvider>(svc => TimeProvider.System);
 builder.Services.AddSingleton<IHealthChecksService, HealthChecksService>();
@@ -27,9 +34,10 @@ builder.Services.AddHostedService(svc => (PresetsSyncService)svc.GetRequiredServ
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// if (app.Environment.IsDevelopment()) ==> This is NOT designed to be exposed on internet (like the WLED devices)
 {
-	app.MapOpenApi();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseAuthorization();

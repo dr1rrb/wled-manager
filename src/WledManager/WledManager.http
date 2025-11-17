@@ -1,6 +1,22 @@
 @WledManager_HostAddress = http://localhost:5112
 
-GET {{WledManager_HostAddress}}/weatherforecast/
+### Run backup manually
+POST {{WledManager_HostAddress}}/api/backups/run
+Content-Type: application/json
+
+###
+
+### Synchronize presets
+POST {{WledManager_HostAddress}}/api/presets/sync
+Content-Type: application/json
+
+###
+
+### Get OpenAPI specification
+GET {{WledManager_HostAddress}}/openapi/v1.json
 Accept: application/json
 
 ###
+
+### Access Swagger UI (open in browser)
+# {{WledManager_HostAddress}}/swagger
